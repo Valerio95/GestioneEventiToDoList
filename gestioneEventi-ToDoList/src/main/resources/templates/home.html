@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Homepage</title>
+</head>
+<body>
+<br>
+<h1 style="text-align:center">Creazione Eventi</h1>
+<br>
+<form action="#" th:action="@{/creaEvento}" method="POST" th:object="${evento}" class="col-lg-6 offset-lg-3 ">
+<input type="text" th:field="*{titolo}"  placeholder="Titolo" required="required">
+<input type="text" th:field="*{descrizione}"  placeholder="Descrizione" required="required">
+<input type="datetime-local" th:field="*{scadenza}" name="scadenza" required="required"> 
+<input type="submit" value="Crea" class="btn btn-outline-primary" >
+<br>
+</form>
+
+<table class="table table-striped table-responsive-md">
+		<thead>
+			<tr>
+				<th>Titolo</th>
+				<th>Descrizione</th>
+				<th>Scadenza</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="evento : ${listaEventi}">
+				<td th:text="${evento.titolo}"></td>
+				<td th:text="${evento.descrizione}"></td>
+				<td th:text="${evento.scadenza}"></td>
+			</tr>
+		</tbody>
+</table>
+	
+
+
+</body>
+</html>

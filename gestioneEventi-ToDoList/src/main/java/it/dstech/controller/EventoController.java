@@ -1,7 +1,10 @@
 package it.dstech.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
@@ -14,10 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 import it.dstech.model.Evento;
 import it.dstech.model.Sched;
 import it.dstech.service.EventoService;
+import it.dstech.service.MailService;
 
 @Controller
 public class EventoController {
 
+	@Autowired
+	private MailService mail;
+	
 	@Autowired
 	TaskScheduler scheduler;
 	
@@ -40,19 +47,24 @@ public class EventoController {
 
 	@PostMapping("/creaEvento")
 	public ModelAndView creaEvento(Evento evento) {
-		LocalDateTime dateTime = evento.getScadenza();
-		dateTime.minusMinutes(5);
-		Sched sched = new Sched();
-		sched.setDate(dateTime);
-		System.out.println(dateTime);
-		int minute = dateTime.getMinute();
-		int hours = dateTime.getHour();
-		int day = dateTime.getDayOfMonth();
-		int month = dateTime.getMonth().getValue();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+		LocalDateTime dateTime = LocalDateTime.parse(evento.getData(), formatter);
+        evento.setScadenza(dateTime);
+		LocalDateTime dateTime2 = evento.getScadenza().minusMinutes(5);
+		Sched sched = new Sched(mail);
+		sched.setDate(dateTime2);
+		System.out.println(sched.getDate());
+		int minute = dateTime2.getMinute();
+		int hours = dateTime2.getHour();
+		int day = dateTime2.getDayOfMonth();
+		int month = dateTime2.getMonth().getValue();
 		String expression = " 0 " + minute + " " + hours + " " + day + " " + month + " ?";
 		CronTrigger trigger = new CronTrigger(expression, TimeZone.getTimeZone(TimeZone.getDefault().getID()));
 		scheduler.schedule(sched, trigger);
         eventoService.save(evento);
 		return login();
 	}
+	
+	
+	
 }

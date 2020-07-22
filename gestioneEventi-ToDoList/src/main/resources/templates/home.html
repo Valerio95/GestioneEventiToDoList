@@ -17,7 +17,7 @@
 <form action="#" th:action="@{/creaEvento}" method="POST" th:object="${evento}" class="col-lg-6 offset-lg-3 ">
 <input type="text" th:field="*{titolo}"  placeholder="Titolo" required="required">
 <input type="text" th:field="*{descrizione}"  placeholder="Descrizione" required="required">
-<input type="datetime-local" th:field="*{scadenza}" name="scadenza" required="required"> 
+<input type="datetime-local" th:field="*{data}" name="scadenza" required="required"> 
 <input type="submit" value="Crea" class="btn btn-outline-primary" >
 <br>
 </form>

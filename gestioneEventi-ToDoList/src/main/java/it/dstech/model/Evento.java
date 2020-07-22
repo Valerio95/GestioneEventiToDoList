@@ -24,9 +24,13 @@ public class Evento {
 	
 	private String descrizione;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+	private String data;
+	
 	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern="dd-MM-yyyy HH:mm")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-	private String scadenza;
+	private LocalDateTime scadenza;
 
 	public Long getId() {
 		return id;
@@ -53,12 +57,22 @@ public class Evento {
 	}
 
 	public LocalDateTime getScadenza() {
-		return scadenza;
+		return (LocalDateTime)scadenza;
 	}
 
-	public void setScadenza(String scadenza) {
+	public void setScadenza(LocalDateTime scadenza) {
 		this.scadenza = scadenza;
 	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	
 
 	
 
